@@ -3,6 +3,7 @@
 # @Author : Lurume
 # @File : parseModule.py
 # @Software : PyCharm
+import json
 import os
 import sqlite3
 import time
@@ -77,13 +78,26 @@ def generate_notice(dataframe):
                    "再次恭喜您，祝您学习进步、事业成功！" \
                    "教务处"
         total[name] = message
+    # 获取发送者信息
+
+    sender_email = ""
+    auth_code = ""
+
+    with open("./senderInfo.json", 'r') as file:
+        senderInfo = json.load(file)
+
+        sender_email = senderInfo["senderEmail"]
+        auth_code = senderInfo["authCode"]
+
+    if sender_email == "" or auth_code == "":
+        return {"message": "error", "data": "后端配置错误! 未填写发送信息"}
 
     for key, value in total.items():
         try:
             email = query_database(key)
             if email:
-                emailModule.send('1159210595@qq.com', email[0], '成绩单', value, 'hmqjtysogqskhcid')
+                emailModule.send(sender_email, email[0], '成绩单', value, auth_code)
         except Exception as e:
-            emailModule.send('1159210595@qq.com', '1131288411@qq.com', '成绩单', value, 'hmqjtysogqskhcid')
+            emailModule.send(sender_email, sender_email, '成绩单', value, auth_code)
 
     return {"message": "success", "data": total}
