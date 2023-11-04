@@ -9,6 +9,7 @@ from email.header import Header
 def send(sender_qq,receiver,mail_title,mail_content):
     host_server = 'smtp.qq.com'  #qq邮箱smtp服务器
     
+    #授权码
     pwd = 'hmqjtysogqskhcid'
 
     # 初始化一个邮件主体
@@ -19,17 +20,20 @@ def send(sender_qq,receiver,mail_title,mail_content):
     msg['To'] = receiver
 
     # 邮件正文内容
-    msg.attach(MIMEText(mail_content,'plain','utf-8'))
+    try:
+        msg.attach(MIMEText(mail_content,'plain','utf-8'))
 
-    smtp = SMTP_SSL(host_server) # ssl登录
+        smtp = SMTP_SSL(host_server) # ssl登录
 
-    smtp.login(sender_qq,pwd)
+        smtp.login(sender_qq,pwd)
 
-    # sendmail(from_addr,to_addrs,msg,...):
-    # from_addr:邮件发送者地址
-    # to_addrs:邮件接收者地址。字符串列表['接收地址1','接收地址2','接收地址3',...]或'接收地址'
-    # msg：发送消息：邮件内容。一般是msg.as_string():as_string()是将msg(MIMEText对象或者MIMEMultipart对象)变为str。
-    smtp.sendmail(sender_qq,receiver,msg.as_string())
+        # sendmail(from_addr,to_addrs,msg,...):
+        # from_addr:邮件发送者地址
+        # to_addrs:邮件接收者地址。字符串列表['接收地址1','接收地址2','接收地址3',...]或'接收地址'
+        # msg：发送消息：邮件内容。一般是msg.as_string():as_string()是将msg(MIMEText对象或者MIMEMultipart对象)变为str。
+        smtp.sendmail(sender_qq,receiver,msg.as_string())
 
-    # quit():用于结束SMTP会话。
-    smtp.quit()
+        # quit():用于结束SMTP会话。
+        smtp.quit()
+    except Exception as e:
+        print(f"邮件发送失败: {e}")
