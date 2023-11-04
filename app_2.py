@@ -8,7 +8,8 @@ from email.header import Header
 
 def send(sender_qq,receiver,mail_title,mail_content):
     host_server = 'smtp.qq.com'  #qq邮箱smtp服务器
-    
+
+    #授权码
     pwd = 'hmqjtysogqskhcid'
 
     # 初始化一个邮件主体
