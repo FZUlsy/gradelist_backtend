@@ -63,8 +63,11 @@ def generate_notice(dataframe):
         total[name] = message
 
     for key, value in total.items():
-        email = query_database(key)
-        if email:
-            emailModule.send('1159210595@qq.com', email[0], '成绩单', value)
+        try:
+            email = query_database(key)
+            if email:
+                emailModule.send('1159210595@qq.com', email[0], '成绩单', value)
+        except Exception as e:
+            emailModule.send('1159210595@qq.com', '1131288411@qq.com', '成绩单', value)
 
     return {"message": "success", "data": total}
