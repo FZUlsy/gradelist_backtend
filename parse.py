@@ -4,13 +4,24 @@
 # @File : parse.py
 # @Software : PyCharm
 import pandas as pd
-from flask import Flask
+from flask import Flask, request
+from flask_cors import CORS, cross_origin
 
+import time
 app = Flask(__name__)
 
-@app.route('/receive')
-def receive(dataframe):
-    generate_notice(dataframe)
+
+@app.route('/receive', methods=['POST'])
+@cross_origin()
+def receive():
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save('gradelist.xlsx')
+        df = pd.read_excel('gradelist.xlsx')
+        print(df)
+        result = generate_notice(df)
+        return result
+
 # # 指定成绩表文件路径
 # file_path = '成绩表.xlsx'
 #
