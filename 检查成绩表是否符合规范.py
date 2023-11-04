@@ -2,7 +2,7 @@ import openpyxl
 
 # 打开Excel文件
 try:
-    workbook = openpyxl.load_workbook('ta.xlsx')  # 加载Excel文件
+    workbook = openpyxl.load_workbook('成绩单.xlsx')  # 加载Excel文件
 except FileNotFoundError:
     print("文件不存在或路径错误，请确认文件路径是否正确。")
 
